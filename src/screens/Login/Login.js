@@ -1,5 +1,5 @@
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import navigationStrings from '../../constants/navigationStrings';
 import WrapperContainer from '../../components/WrapperContainer';
 import imagePath from '../../constants/imagePath';
@@ -8,11 +8,16 @@ import colors from '../../styles/colors';
 import TextInputComp from '../../components/TextInputComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import ButtonComp from '../../components/ButtonComp';
+import firebase from '@react-native-firebase/app'; 
 
 const Login = ({navigation}) => {
   const [emial, setEmail] = useState('');
   const [number, setNumber] = useState('');
   console.log(number, 'number', emial, 'emial');
+  useEffect(()=>{
+    console.log('Initialized Firebase Apps',firebase.apps.length);
+    
+  })
 
   return (
     <WrapperContainer>
