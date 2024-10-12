@@ -8,17 +8,63 @@ import colors from '../../styles/colors';
 import TextInputComp from '../../components/TextInputComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import ButtonComp from '../../components/ButtonComp';
-import firebase from '@react-native-firebase/app'; 
+import firebase from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
 
 const Login = ({navigation}) => {
   const [emial, setEmail] = useState('');
   const [number, setNumber] = useState('');
   console.log(number, 'number', emial, 'emial');
-  useEffect(()=>{
-    console.log('Initialized Firebase Apps',firebase.apps.length);
-    
-  })
+  useEffect(() => {
+    console.log('Initialized Firebase Apps', firebase.apps.length);
+  });
+  const userLoginUnnon = async () => {
+    try {
+      const userEmial = await auth().signInAnonymously();
+      console.log('my uid :', userEmial.user.uid);
+      if (userEmial.user.uid) {
+        navigation.navigate(navigationStrings.OTP_SCREEN);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const createAccountInfirebase = async () => {
+    try {
+      auth()
+        .createUserWithEmailAndPassword('testOne@gmail.com', 'Test@12345')
+        .then(res => {
+          console.log(res);
+        });
+    } catch (error) {
+      console.log(error, 'error');
+    }
+  };
 
+  const loginCreatedUser = async () => {
+    try {
+      auth()
+        .signInWithEmailAndPassword('testOne@gmail.com', 'Test@12345')
+        .then(res => {
+          console.log(res, 'login res');
+        });
+    } catch (error) {
+      console.log(error, 'login error');
+    }
+  };
+
+  const signOutUserCall = async() =>{
+    try{
+      auth().signOut().then((res)=>{
+
+        console.log(res,'signout method call');
+        
+      })
+    }catch(error){
+      console.log(error,'signout error');
+      
+    }
+  }
   return (
     <WrapperContainer>
       <KeyboardAwareScrollView
@@ -45,7 +91,8 @@ const Login = ({navigation}) => {
               keyboardType={'number-pad'}
             />
             <ButtonComp
-              onPress={() => navigation.navigate(navigationStrings.OTP_SCREEN)}
+              // onPress={() => navigation.navigate(navigationStrings.OTP_SCREEN)}
+              onPress={() => signOutUserCall()}
               buttonText={'Continue'}
             />
           </View>
